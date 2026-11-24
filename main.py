@@ -13,7 +13,24 @@ ENTRY = (
 )
 
 
+MAX_CHARS = 200
+
+
+def validate_entry(entry: str) -> None:
+    """Gate: entry must be exactly one non-empty line of at most 200 chars."""
+    if not entry:
+        raise SystemExit("entry validation failed: entry is empty")
+    if "\n" in entry or "\r" in entry:
+        raise SystemExit("entry validation failed: entry must be a single line")
+    if len(entry) > MAX_CHARS:
+        raise SystemExit(
+            f"entry validation failed: entry is {len(entry)} chars, "
+            f"max is {MAX_CHARS}"
+        )
+
+
 def main() -> None:
+    validate_entry(ENTRY)
     output_dir = os.environ.get("OUTPUT_DIR", "/output")
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, "entry.txt")
